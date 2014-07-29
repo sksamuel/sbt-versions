@@ -1,8 +1,19 @@
 sbt-versions
 ===========
 
-SBT plugin for checking for updated versions of your project's dependencies.
+SBT plugin for checking for the availability of updated versions of your project's dependencies.
 
+### How to use
+
+Add the plugin to your SBT by adding this to project/plugins.sbt
+
+```
+addSbtPlugin("com.sksamuel.sbt-versions" % "sbt-versions" % "0.1.0")
+```
+
+Note that this is an auto plugin so only works with SBT 0.13.5 or higher.
+
+Then simply running sbt checkVersions will cause SBT to check all your declared dependencies against maven central. Any deps that have updated versions available will be highlighted in the console.
 
 ### Example
 
