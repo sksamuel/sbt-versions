@@ -31,24 +31,23 @@ object SbtVersionsPlugin extends AutoPlugin {
       streams.value.log.info(s"[sbt-versions] ${deps.size} dependencies to check for [$projectName]")
       streams.value.log.info("--------------------------------------------------------------")
       for ( module <- deps ) {
-        val artifact = new DefaultArtifact(s"${module.organization}:${module.name}:[${module.revision},)")
-        streams.value.log.info(s"[sbt-versions] checking $module...")
-        val latest = latestRevision(artifact)
+        val latest = latestRevision(module)
         if (latest != module.revision)
-          streams.value.log.info(s"[sbt-versions] Updated version available [$latest]")
+          streams.value.log.info(s"[sbt-versions] Update available $module [latest: $latest]")
       }
     }
   )
 
-  private def latestRevision(artifact: Artifact): String = {
+  private def latestRevision(module: ModuleID): String = {
 
+    val artifact = new DefaultArtifact(s"${module.organization}:${module.name}:[${module.revision},)")
     val central = new RemoteRepository.Builder("central", "default", "http://repo1.maven.org/maven2/").build()
 
     val locator = MavenRepositorySystemUtils.newServiceLocator()
     locator.addService(classOf[RepositoryConnectorFactory], classOf[BasicRepositoryConnectorFactory])
     locator.addService(classOf[TransporterFactory], classOf[HttpTransporterFactory])
 
-    val system: RepositorySystem = locator.getService(classOf[RepositorySystem])
+    val system = locator.getService(classOf[RepositorySystem])
 
     val session = MavenRepositorySystemUtils.newSession()
     val localRepo = new LocalRepository("target/local-repo")
@@ -59,7 +58,7 @@ object SbtVersionsPlugin extends AutoPlugin {
     req.addRepository(central)
 
     val range = system.resolveVersionRange(session, req)
-    Option(range).flatMap(arg => Option(arg.getHighestVersion)).map(_.toString).getOrElse(artifact.getVersion)
+    Option(range).flatMap(arg => Option(arg.getHighestVersion)).map(_.toString).getOrElse(module.revision)
   }
 
 }
