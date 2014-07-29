@@ -26,7 +26,8 @@ object SbtVersionsPlugin extends AutoPlugin {
   override lazy val projectSettings = Seq(
     checkVersions := {
       val deps = libraryDependencies.value
-      streams.value.log.info(s"[sbt-versions] ${deps.size} dependencies to check for [$name.value]")
+      val projectName = name.value
+      streams.value.log.info(s"[sbt-versions] ${deps.size} dependencies to check for [$projectName]")
       for ( module <- deps ) {
         val artifact = new DefaultArtifact(s"${module.organization}:${module.name}:[${module.revision},)")
         streams.value.log.info(s"[sbt-versions] checking $module...")
