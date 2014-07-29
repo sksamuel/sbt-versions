@@ -20,13 +20,13 @@ object SbtVersionsPlugin extends AutoPlugin {
     lazy val checkVersions = taskKey[Unit]("check for updated project dependencies")
   }
 
-  import com.sksamuel.sbt.versions.SbtVersionsPlugin.autoImport._
+  import autoImport._
 
   override def trigger = allRequirements
   override lazy val projectSettings = Seq(
     checkVersions := {
       for ( module <- libraryDependencies.value ) {
-        val artifact = new DefaultArtifact(module.organization, module.name, "jar", module.revision)
+        val artifact = new DefaultArtifact(s"${module.organization}:${module.name}:[${module.revision},)")
         streams.value.log.info(s"[sbt-versions] checking $module...")
         val latest = latestRevision(artifact)
         if (latest != module.revision)
@@ -50,7 +50,7 @@ object SbtVersionsPlugin extends AutoPlugin {
     session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo))
 
     val req = new VersionRangeRequest()
-    req.setArtifact(new DefaultArtifact("org.scalatra:scalatra-auth_2.10:[1.0.0.0.0,)"))
+    req.setArtifact(artifact)
     req.addRepository(central)
 
     val range = system.resolveVersionRange(session, req)

@@ -1,4 +1,4 @@
-organization := "com.sksamuel"
+organization := "com.sksamuel.sbt-versions"
 
 name := "sbt-versions"
 
