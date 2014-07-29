@@ -8,7 +8,7 @@ SBT plugin for checking for the availability of updated versions of your project
 Add the plugin to your SBT by adding this to project/plugins.sbt
 
 ```
-addSbtPlugin("com.sksamuel.sbt-versions" % "sbt-versions" % "0.1.0")
+addSbtPlugin("com.sksamuel.sbt-versions" % "sbt-versions" % "0.2.0")
 ```
 
 Note that this is an auto plugin so only works with SBT 0.13.5 or higher.
