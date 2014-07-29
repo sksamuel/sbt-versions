@@ -25,7 +25,9 @@ object SbtVersionsPlugin extends AutoPlugin {
   override def trigger = allRequirements
   override lazy val projectSettings = Seq(
     checkVersions := {
-      for ( module <- libraryDependencies.value ) {
+      val deps = libraryDependencies.value
+      streams.value.log.info(s"[sbt-versions] ${deps.size} dependencies to check for [$name.value]")
+      for ( module <- deps ) {
         val artifact = new DefaultArtifact(s"${module.organization}:${module.name}:[${module.revision},)")
         streams.value.log.info(s"[sbt-versions] checking $module...")
         val latest = latestRevision(artifact)
@@ -54,7 +56,7 @@ object SbtVersionsPlugin extends AutoPlugin {
     req.addRepository(central)
 
     val range = system.resolveVersionRange(session, req)
-    Option(range).map(_.getHighestVersion).map(_.toString).getOrElse(artifact.getVersion)
+    Option(range).flatMap(arg => Option(arg.getHighestVersion)).map(_.toString).getOrElse(artifact.getVersion)
   }
 
 }
