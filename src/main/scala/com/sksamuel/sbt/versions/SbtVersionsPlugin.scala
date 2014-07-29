@@ -54,7 +54,7 @@ object SbtVersionsPlugin extends AutoPlugin {
     req.addRepository(central)
 
     val range = system.resolveVersionRange(session, req)
-    range.getHighestVersion.toString
+    Option(range).map(_.getHighestVersion).map(_.toString).getOrElse(artifact.getVersion)
   }
 
 }
