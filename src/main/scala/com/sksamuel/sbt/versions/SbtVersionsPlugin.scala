@@ -30,7 +30,7 @@ object SbtVersionsPlugin extends AutoPlugin {
         streams.value.log.info(s"[sbt-versions] checking $module...")
         val latest = latestRevision(artifact)
         if (latest != module.revision)
-          streams.value.log.info(s"[info] [sbt-versions] Updated version available [$latest]")
+          streams.value.log.info(s"[sbt-versions] Updated version available [$latest]")
       }
     }
   )
