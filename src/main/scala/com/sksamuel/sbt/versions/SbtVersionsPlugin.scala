@@ -24,10 +24,12 @@ object SbtVersionsPlugin extends AutoPlugin {
 
   override def trigger = allRequirements
   override lazy val projectSettings = Seq(
+    parallelExecution in GlobalScope := false,
     checkVersions := {
       val deps = libraryDependencies.value
       val projectName = name.value
       streams.value.log.info(s"[sbt-versions] ${deps.size} dependencies to check for [$projectName]")
+      streams.value.log.info("--------------------------------------------------------------")
       for ( module <- deps ) {
         val artifact = new DefaultArtifact(s"${module.organization}:${module.name}:[${module.revision},)")
         streams.value.log.info(s"[sbt-versions] checking $module...")
