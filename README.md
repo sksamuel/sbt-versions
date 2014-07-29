@@ -1,4 +1,4 @@
-scalatitude
+sbt-versions
 ===========
 
-Scala library for geocoding and coordinate conversion
+SBT plugin for checking for updated versions of your project's dependencies.
