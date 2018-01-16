@@ -3,6 +3,8 @@ sbt-versions
 
 SBT plugin for checking for the availability of updated versions of your project's dependencies.
 
+### This plugin is not maintained anymore, there is a better version here: https://github.com/rtimush/sbt-updates
+
 ### How to use
 
 Add the plugin to your SBT by adding this to project/plugins.sbt
